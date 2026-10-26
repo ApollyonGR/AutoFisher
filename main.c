@@ -1,17 +1,25 @@
 #include <stdio.h>
 #include <windows.h>
 
-
-COLORREF GetPixelRGB(int x, int y){
+/*
+TODO:
+    1. Find specific pixel to use, and check if its color values are the specific shade of yellow or red
+    2. Add mouse double clicking functionality
+    3. Add randomness elements to avoid macro detection (duty cycle, speed variation by %) 
+*/ 
+ COLORREF GetPixelRGB(int x, int y){
     HDC hdc = GetDC(NULL);
     if (hdc == NULL){
         printf("Failed to get device context");
         return -1;
     }
+
     COLORREF pixel = GetPixel(hdc, x, y);
     ReleaseDC(NULL, hdc);
+
     return pixel;
-}
+
+} 
 
 COLORREF GetMousePixelRGB(){
     HDC hdc = GetDC(NULL);
@@ -23,19 +31,20 @@ COLORREF GetMousePixelRGB(){
     POINT cursor;
     GetCursorPos(&cursor);
 
+    printf("Press Enter to fetch RGB values and XY coordinates.");
+    getc(stdin);
+
     COLORREF pixel = GetPixel(hdc, cursor.x, cursor.y);
     ReleaseDC(NULL, hdc);
+
     return pixel;
 }
 
 int main(){
-    // int x, y;
-    // printf("Enter x pixel: ");
-    // scanf("%d", &x);
-    // printf("Enter y pixel: ");
-    // scanf("%d", &y);
+    while(true){
 
-    while(1){
+        COLORREF yellowValue = RGB(255, 222, 47);
+        COLORREF redValue = RGB(255, 85, 85);
         COLORREF pixel = GetMousePixelRGB();
 
         BYTE red = GetRValue(pixel); 
