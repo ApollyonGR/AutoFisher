@@ -3,7 +3,6 @@
 
 /*
 TODO:
-    1. Add mouse double clicking functionality 
     2. Change program to establish click-spot by waiting for user to click themselves in desired area 
     3. Add randomness elements to avoid macro detection (duty cycle, speed variation by %) 
 */ 
@@ -58,6 +57,18 @@ void LeftClick() {
 
     inputs[1].type = INPUT_MOUSE;
     inputs[1].mi.dwFlags = MOUSEEVENTF_LEFTUP;
+    
+    SendInput(2, inputs, sizeof(INPUT));
+}
+
+void RightClick() {
+    INPUT inputs[2] = {};
+
+    inputs[0].type = INPUT_MOUSE;
+    inputs[0].mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
+
+    inputs[1].type = INPUT_MOUSE;
+    inputs[1].mi.dwFlags = MOUSEEVENTF_RIGHTUP;
     
     SendInput(2, inputs, sizeof(INPUT));
 }
