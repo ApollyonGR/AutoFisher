@@ -69,7 +69,7 @@ int main(){
         COLORREF redValue = RGB(255, 85, 85);
 
         // GetMouseXYPos();
-        LeftClick();
+        // LeftClick();
 
         // COLORREF pixel = GetMousePixelRGB();
         // BYTE red = GetRValue(pixel); 
