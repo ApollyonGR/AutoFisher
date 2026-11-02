@@ -3,18 +3,18 @@
 
 /*
 TODO:
-    2. Change program to establish click-spot by waiting for user to click themselves in desired area 
-    3. Add randomness elements to avoid macro detection (duty cycle, speed variation by %) 
+    Add randomness elements to avoid macro detection (duty cycle, speed variation by %) 
 */ 
 COLORREF GetPixelRGB(int x, int y){
-    HDC hdc = GetDC(NULL);
+    HWND hwnd = FindWindow(NULL, "Minecraft*");
+    HDC hdc = GetDC(hwnd);
     if (hdc == NULL){
         printf("Failed to get device context");
         return -1;
     }
 
     COLORREF pixel = GetPixel(hdc, x, y);
-    ReleaseDC(NULL, hdc);
+    ReleaseDC(hwnd, hdc);
 
     return pixel;
 
@@ -27,8 +27,8 @@ COLORREF GetMousePixelRGB(){
         return -1;
     }
 
-    printf("Press Enter to fetch RGB values.");
-    getc(stdin);
+    // printf("Press Enter to fetch RGB values.");
+    // getc(stdin);
 
     POINT cursor;
     GetCursorPos(&cursor);
@@ -75,31 +75,33 @@ int main(){
 
     printf("Press Enter with your mouse hovered over the pixel you'd lock to lock on.");
     getc(stdin);
-    
     POINT cursor = GetMouseXYPos();
     printf("(%ld, %ld)\n", cursor.x, cursor.y);
 
-        // GetMouseXYPos();
-        // LeftClick();
-
-        // COLORREF pixel = GetMousePixelRGB();
-        // BYTE red = GetRValue(pixel); 
-        // BYTE green = GetGValue(pixel); 
-        // BYTE blue = GetBValue(pixel); 
-        // printf("(%d, %d, %d)\n", red, green, blue);
     printf("Starting AutoFisher in 5...\n");
     Sleep(1000);
     for (int i = 4; i > 0; i--){
         printf("%d...\n", i);
         Sleep(1000);
     }
-    //LeftClick();
 
-    // COLORREF pixel = GetMousePixelRGB();
-    // BYTE red = GetRValue(pixel); 
-    // BYTE green = GetGValue(pixel); 
-    // BYTE blue = GetBValue(pixel); 
-    // printf("(%d, %d, %d)\n", red, green, blue);
 
+    while(true) {
+        COLORREF pixelColor = GetPixelRGB(cursor.x, cursor.y);
+        BYTE red = GetRValue(pixelColor); 
+        BYTE green = GetGValue(pixelColor); 
+        BYTE blue = GetBValue(pixelColor);
+
+        printf("RGB values for (%d,%d) are (%d, %d, %d)\n",cursor.x, cursor.y, red, green, blue);
+        if (pixelColor == yellowValue){
+            printf("Yellow detected!\n");
+        } 
+        else if (pixelColor == redValue){
+            printf("Red detected!\n");
+        }
+        Sleep(250);
+    }
     return 0;
 }
+
+// PASS -lgdi32 FLAG TO THE COMPILER OR GetPixel() WONT WORKK
