@@ -6,7 +6,7 @@ TODO:
     2. Change program to establish click-spot by waiting for user to click themselves in desired area 
     3. Add randomness elements to avoid macro detection (duty cycle, speed variation by %) 
 */ 
- COLORREF GetPixelRGB(int x, int y){
+COLORREF GetPixelRGB(int x, int y){
     HDC hdc = GetDC(NULL);
     if (hdc == NULL){
         printf("Failed to get device context");
@@ -40,12 +40,8 @@ COLORREF GetMousePixelRGB(){
 }
 
 POINT GetMouseXYPos(){
-    printf("Press Enter to fetch XY coordinates.");
-    getc(stdin);
-
     POINT cursor;
     GetCursorPos(&cursor);
-    
     return cursor; 
 }
 
@@ -74,10 +70,14 @@ void RightClick() {
 }
 
 int main(){
+    COLORREF yellowValue = RGB(255, 222, 47);
+    COLORREF redValue = RGB(255, 85, 85);
+
+    printf("Press Enter with your mouse hovered over the pixel you'd lock to lock on.");
+    getc(stdin);
     
-    while(true){
-        COLORREF yellowValue = RGB(255, 222, 47);
-        COLORREF redValue = RGB(255, 85, 85);
+    POINT cursor = GetMouseXYPos();
+    printf("(%ld, %ld)\n", cursor.x, cursor.y);
 
         // GetMouseXYPos();
         // LeftClick();
@@ -87,7 +87,19 @@ int main(){
         // BYTE green = GetGValue(pixel); 
         // BYTE blue = GetBValue(pixel); 
         // printf("(%d, %d, %d)\n", red, green, blue);
+    printf("Starting AutoFisher in 5...\n");
+    Sleep(1000);
+    for (int i = 4; i > 0; i--){
+        printf("%d...\n", i);
+        Sleep(1000);
     }
+    //LeftClick();
+
+    // COLORREF pixel = GetMousePixelRGB();
+    // BYTE red = GetRValue(pixel); 
+    // BYTE green = GetGValue(pixel); 
+    // BYTE blue = GetBValue(pixel); 
+    // printf("(%d, %d, %d)\n", red, green, blue);
 
     return 0;
 }
