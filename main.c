@@ -1,11 +1,12 @@
+#include <time.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <windows.h>
 
 /*
 TODO:
     Add randomness elements to avoid macro detection (duty cycle, speed variation by %) 
 */ 
-
 COLORREF GetPixelRGB(int x, int y){
     HDC hdc = GetDC(NULL);
     if (hdc == NULL){
@@ -71,6 +72,12 @@ void RightClick() {
     SendInput(2, inputs, sizeof(INPUT));
 }
 
+int GetRandomNumber(int min, int max){
+    srand(time(NULL));
+    int num = rand() % (max - min + 1) + min;
+    return num;
+}
+
 int main(){
     COLORREF yellowValue = RGB(255, 222, 47);
     COLORREF redValue = RGB(255, 85, 85);
@@ -88,6 +95,7 @@ int main(){
         Sleep(1000);
     }
 
+    // Main loop
     while(true) {
         // Regrabs the chosen pixels RGB 
         COLORREF pixelColor = GetPixelRGB(cursor.x, cursor.y);
@@ -103,4 +111,4 @@ int main(){
     return 0;
 }
 
-// PASS -lgdi32 FLAG TO THE COMPILER OR GetPixel() WONT WORKK
+// gcc main.c -o main.exe -lgdi32; .\main.exe
